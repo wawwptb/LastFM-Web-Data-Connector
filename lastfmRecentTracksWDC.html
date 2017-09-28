@@ -3,7 +3,7 @@
     <head>
         <title>Reddit WDC</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
-        <script src="js/tableauwdc-1.1.0.js" type="text/javascript"></script>
+        <script src="https://connectors.tableau.com/libs/tableauwdc-1.1.1.js" type="text/javascript"></script>
         <script type="text/javascript">
          (function() {
             // LastFM - Recent Tracks WebDataConnector for Tableau 9.1 beta
@@ -20,7 +20,7 @@
             // ----Be less granular == we can download more data
          
             var myConnector = tableau.makeConnector();
-            var apiKey = ""; // FILL ME IN
+            var apiKey = "28dd30d11010aa781e902372e2451262"; // FILL ME IN
 
             myConnector.getColumnHeaders = function() {
         	    var fieldNames = ['Track Title',   'Album',    'Artist',   'Date'];
