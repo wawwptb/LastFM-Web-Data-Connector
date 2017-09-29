@@ -4,7 +4,7 @@
         <title>Reddit WDC</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
         <script src="https://connectors.tableau.com/libs/tableauwdc-2.2.latest.js" type="text/javascript"></script>
-        <script type="text/javascript">
+        <script src="../js/StandardConnectionsExample.js"></script>
          (function() {
             // LastFM - Recent Tracks WebDataConnector for Tableau 9.1 beta
             // Written by Justin Dallal for Tableau hackathon
@@ -61,8 +61,8 @@
             {
                 var connectionData = JSON.parse(tableau.connectionData);
                 var numTracks = connectionData["resultsRequested"];
-                resultsCompleted += 1000;
-                getJSON(connectionData["userName"], 1000, numTracks - resultsCompleted > 0);
+                resultsCompleted += 10000;
+                getJSON(connectionData["userName"], 10000, numTracks - resultsCompleted > 0);
             };
 
             myConnector.setLastfmData = function(userName, resultsRequested) 
