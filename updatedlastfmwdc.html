@@ -1,0 +1,95 @@
+<html>
+      <head>
+        <title>Last.FM WDC</title>
+        <meta http-equiv="Cache-Control" content="no-store" />
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script src="https://connectors.tableau.com/libs/tableauwdc-2.2.latest.js" type="text/javascript"></script>
+
+
+        <script type="text/javascript">
+        (function() {
+        var myconnector = tableau.makeconnector();
+        var apiKey = "28dd30d11010aa781e902372e2451262";
+        myconnector.getColumnHeaders = function() {
+          var fieldNames = ['Track Title', 'Album', 'Artist', 'Date'];
+          var fieldTypes = ['string', 'string', 'string', 'date'];
+          tableau.headersCallback(fieldNames,fieldTypes);
+        } ;
+        var resultsCompleted = 0;
+        function getJSON(username, numTracks, continueGettingData)
+        {
+              $.getJSON("http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + userName + "&api_key=" + apiKey + "&format=json&limit=" + numTracks + "&page=" + (resultsCompleted / numTracks), function(rd))
+              {
+                var results = [];
+                  $.each(rd.recenttracks.track, function(k, v)
+              {
+                if(v.date == undefined)
+                  return;
+                var entry = {
+                    "Track Title": v.name,
+                    "Album": v.album["#text"],
+                    "Artist": v.artist['#text'],
+                    "Date": new Date(Date.parse(v.date["#text"])).toISOString().split("T")[0]
+                }
+                results.push(entry)
+              });
+              tableau.dataCallback(results, resultsCompleted, continueGettingData);
+            });
+        }
+        myConnector.getTableData = function(lastRecordToken)
+        {
+            var connectionData = JSON.parse(tableau.connectionData);
+            var numTracks = connectionData["resultsRequested"]
+            resultsCompleted += 10000;
+            getJSON(connectionData["userName"], 10000, numTracks- resultsCompleted > 0);
+        };
+        myconnector.setLastfmData = function(userName, resultsRequested)
+        {
+          var connectionData = {"userName": userName, "resultsRequested": resultsRequested};
+          tableau.connectionData = JSON.stringify(connectionData);
+          tableau.connectionName = 'Listening data for: ' + username;
+        };
+        tableau.registerConnector(myConnector);
+        $(document).ready(function()
+        {
+          $("submitButton").click(function()
+          {
+            var subreddit = $('#userName').val().trim();
+            var resultsRequested = parseInt($('#trackCount').val(),10);
+            if (subreddit)
+            {
+              myConnector.setLastfmData(subreddit, resultsRequested);
+              tableau.submit();
+            }
+          });
+        });
+        })();
+        </script>
+
+      </head>
+
+      <body>
+          <form>
+              <p>LastFM Data Grabber.</p>
+
+              Input user name(s):
+              <input type="text" style="width: 500px;" id="userName" value="kypen"/>
+              <br />
+
+              Number of tracks to analyze
+              <select id="trackCount">
+                  <option value="1000">1000</option>
+                  <option value="3000">3000</option>
+                  <option value="5000">5000</option>
+                  <option value="10000">10000</option>
+              </select>
+
+              <br />
+              <br />
+              <button type="button" id="submitButton">Get Listening Data</button>
+          </form>
+      </body>
+</html>
