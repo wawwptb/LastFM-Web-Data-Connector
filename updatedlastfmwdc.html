@@ -20,7 +20,7 @@
         var resultsCompleted = 0;
         function getJSON(username, numTracks, continueGettingData)
         {
-              $.getJSON("http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + userName + "&api_key=" + apiKey + "&format=json&limit=" + numTracks + "&page=" + (resultsCompleted / numTracks), function(rd))
+              $.getJSON("http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + userName + "&api_key=" + apiKey + "&format=json&limit=" + numTracks + "&page=" + (resultsCompleted / numTracks), function(rd)
               {
                 var results = [];
                   $.each(rd.recenttracks.track, function(k, v)
