@@ -61,8 +61,8 @@
             {
                 var connectionData = JSON.parse(tableau.connectionData);
                 var numTracks = connectionData["resultsRequested"];
-                resultsCompleted += 1000;
-                getJSON(connectionData["userName"], 1000, numTracks - resultsCompleted > 0);
+                resultsCompleted += 5000;
+                getJSON(connectionData["userName"], 5000, numTracks - resultsCompleted > 0);
             };
 
             myConnector.setLastfmData = function(userName, resultsRequested) 
