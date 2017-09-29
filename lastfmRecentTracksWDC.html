@@ -23,8 +23,8 @@
             var apiKey = "28dd30d11010aa781e902372e2451262"; // FILL ME IN
 
             myConnector.getColumnHeaders = function() {
-        	    var fieldNames = ['Track Title',   'Album',    'Artist',   'Date'];
-        	    var fieldTypes = ['string',        'string',   'string',   'date'];
+        	    var fieldNames = ['Track Title',   'Album',    'Artist',   'Date', 'Release Date'];
+        	    var fieldTypes = ['string',        'string',   'string',   'date', 'Release Date'];
         	    tableau.headersCallback(fieldNames, fieldTypes);
             };
 
@@ -106,7 +106,7 @@
                 <option value="1000">1000</option>
                 <option value="3000">3000</option>
                 <option value="5000">5000</option>
-                <!--option value="10000">10000</option-->
+                <option value="10000">10000</option>
             </select>
 
             <br />
